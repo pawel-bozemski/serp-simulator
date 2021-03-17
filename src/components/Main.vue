@@ -5,37 +5,38 @@
         <label for="url" class="inputs__input__title">
           URL
         </label>
-        <input id="url" type="text" placeholder="e.g. mangools.com" v-model="inputs.url">
+        <input id="url" type="text" placeholder="np. marketingmatch.pl" v-model="inputs.url">
         <br>
-        <button type="button" class="btn btn-light btn-sm url-btn" @click="fetchMeta()">meta</button>
+        <button type="button" class="btn btn-light btn-sm url-btn" @click="getData()">Pobierz meta dane</button>
 
       </div>
       <div class="inputs__input">
         <label for="title" class="inputs__input__title">
-          Title
+          Tytuł
         </label>
-        <p class="inputs__input__count">{{ inputs.title.length }} chars (<span
+        <p class="inputs__input__count">{{ inputs.title.length }} znaków (<span
             v-bind:class="[getTitleWidth() > 600 ? 'error' : '']">
           {{ getTitleWidth() }}
         </span>/600px)</p>
         <b-progress class="mt-2" :max="100">
           <b-progress-bar :value="(getTitleProgress())"
-                          :variant="getTitleProgress() > 100 ? 'danger' : 'success'"></b-progress-bar>
+                          :variant="getTitleProgress() > 100 ? 'danger' : 'success'">
+          </b-progress-bar>
         </b-progress>
-        <input id="title" type="text" placeholder="Try to keep the title under 600px to displey it in full length"
+        <input id="title" type="text" placeholder="Postaraj się zmieścić się w 600px aby wyświetlić całość"
                v-model="inputs.title">
         <div v-if="getTitleWidth() > 600" class="inputs__input__error">
-          The title is wider than 600px and it may not be displayed in full length.
+          Tytuł jest szerszy niz 600px i może nie być wyświetlany w pełnej długości.
         </div>
 
         <br>
-        <button type="button" class="btn btn-light btn-sm" @click="capitalizeTitle">Capitalize title</button>
+        <button type="button" class="btn btn-light btn-sm" @click="capitalizeTitle">Tytuł z dużej litery</button>
       </div>
       <div class="inputs__input">
         <label for="desc" class="inputs__input__title">
-          Description
+          Opis
         </label>
-        <p class="inputs__input__count">{{ inputs.desc.length }} chars (<span
+        <p class="inputs__input__count">{{ inputs.desc.length }} znaków (<span
             v-bind:class="[getDecsWidth() > 960 ? 'error' : '']">
           {{ getDecsWidth() }}
         </span>/960px)</p>
@@ -44,37 +45,33 @@
                           :variant="getDescProgress() > 100 ? 'danger' : 'success'"></b-progress-bar>
         </b-progress>
         <textarea id="desc"
-                  placeholder="The meta description may get trimmed at ~960 pixels on desktop and at ~680px on mobile.
-                  Keep it below ~158 chars."
+                  placeholder="Meta opis może być przycięty na ~960 pikselach (w wersji desktopowej) i na ~680px w wersji mobilnej"
                   v-model="inputs.desc"> </textarea>
         <div class="inputs__input__error" v-if="getDecsWidth() > 960">
-          The meta description may get trimmed at ~960 pixels on desktop and at ~680px on mobile. Keep it below ~158
-          characters.
+          Meta opis może być przycięty na ~960 pikselach (w wersji desktopowej) i na ~680px w wersji mobilnej
         </div>
       </div>
       <div class="inputs__input">
         <label for="bold" class="inputs__input__title">
-          Bold keywords
+          Słowa kluczowe
         </label>
-        <input id="bold" type="text" placeholder="Separate with space" v-model="inputs.bold">
-        <br>
-        <button type="button" class="btn btn-info btn-sm" @click="findBolds()">Bold keywords</button>
+        <input id="bold" type="text" placeholder="Podaj słowa kluczowe rozdzielające je spacją" v-model="inputs.bold">
       </div>
       <div class="inputs__input--checkbox">
         <p class="inputs__input__title">
-          Options
+          Opcje
         </p>
         <label class="inputs__input--checkbox" for="date">
-          <input id="date" type="checkbox" @click="showDate()"> Date
+          <input id="date" type="checkbox" @click="showDate()"> Data
         </label>
         <label class="inputs__input--checkbox" for="rating">
-          <input id="rating" type="checkbox" @click="showStars()"> Rating
+          <input id="rating" type="checkbox" @click="showStars()"> Ocena
         </label>
         <label class="inputs__input--checkbox" for="ads">
-          <input id="ads" type="checkbox" @click="showAds()"> Ads
+          <input id="ads" type="checkbox" @click="showAds()"> Reklamy
         </label>
         <label class="inputs__input--checkbox" for="map">
-          <input id="map" type="checkbox" @click="showMap()"> Map pack
+          <input id="map" type="checkbox" @click="showMap()"> Mapa
         </label>
       </div>
       <div class="inputs__input--buttons">
@@ -114,37 +111,25 @@
             </div>
           </div>
         </div>
-
       </div>
       <div class="results__content">
         <div class="row">
           <div class="col-2"></div>
           <div class="col-10">
             <p class="results__content__search">
-              About 608,000,000 results (0.54 seconds)
+              Około 608,000,000 wyników (0.54 sekund)
             </p>
             <div class="results__content__ads" v-bind:class="[{ 'show' : isAd}]">
               <div class="results__content__url results__content__url--ad">
-                mangools.com
+                marketingmatch.pl
               </div>
               <div class="results__content__title">
-                Mangools: Juicy SEO Tools You Will Love
+                Agencja interaktywna Marketing Match - SEO, SEM, WWW - Warszawa
               </div>
               <div class="results__content__desc">
-                Mangools is a bundle of 5 simple but powerful SEO tools made for an effective SEO workflow.
-                Loved by beginners, trusted by professionals. Try it for free!
-              </div>
-            </div>
-            <div class="results__content__ads" v-bind:class="[{ 'show' : isAd}]">
-              <div class="results__content__url results__content__url--ad">
-                mangools.com
-              </div>
-              <div class="results__content__title">
-                Mangools: Juicy SEO Tools You Will Love
-              </div>
-              <div class="results__content__desc">
-                Mangools is a bundle of 5 simple but powerful SEO tools made for an effective SEO workflow.
-                Loved by beginners, trusted by professionals. Try it for free!
+                Jesteśmy certyfikowanym partnerem Google!
+                Oferujemy profesjonalne usługi w zakresie optymalizacji, marketingu internetowego i kompleksowej obsługi
+                stron.
               </div>
             </div>
             <img v-bind:class="[{ 'show' : isMap}]" width="600" class="results__content__map"
@@ -155,19 +140,20 @@
                 <p v-else>{{ inputUrl() }}</p>
               </div>
               <div id="metaTitle" class="results__content__title results__content__url--metadata">
-                <p v-if="inputs.title === ''">{{ content.title }}</p>
-                <p v-else>{{ inputs.title }}</p>
+                <p class="results__content__title--title" v-if="inputs.title === ''">{{ content.title }}</p>
+                <p class="results__content__title--title" v-else>{{ inputs.title }}</p>
               </div>
 
               <div class="results__content__desc results__content__url--metadata" id="metaDesc">
                 <span class="results__content__desc--date"
                       v-bind:class="[{ 'show' : isDate}]">Lut 20,2021 - </span>
-                <span v-if="inputs.desc === ''">{{ content.desc }}</span>
-                <span v-else v-html="inputs.desc"></span>
+                <span class="results__content__desc--desc" v-if="inputs.desc === ''">{{ content.desc }}</span>
+                <span class="results__content__desc--desc" v-else
+                      v-html="$options.filters.bold(this.inputs.desc, this.inputs.bold)"></span>
                 <br>
                 <div class="results__content__stars" v-bind:class="[{ 'show' : isStar}]">
                   <img src="../assets/img/stars.png" alt="">
-                  Rating 5/5 - 112 votes
+                  Ocena 5/5 - 112 głosów
                 </div>
               </div>
             </div>
@@ -200,21 +186,23 @@
 
 <script>
 import html2canvas from 'html2canvas';
+// import axios from "axios";
+import $ from 'jquery'
 
 export default {
   data() {
     return {
       menuItems: [
-        {message: 'All'},
-        {message: 'Images'},
-        {message: 'Videos'},
-        {message: 'Maps'},
-        {message: 'More'}
+        {message: 'Wszystko'},
+        {message: 'Obrazki'},
+        {message: 'Wideo'},
+        {message: 'Mapy'},
+        {message: 'Więcej'}
       ],
       content: {
-        url: 'example/url',
-        title: 'This is an example title',
-        desc: 'Here is an example of what a snippet looks like in Googles SERPs. The content that appears there is usually taken from meta description tag if relevant.'
+        url: 'przykładowy/url',
+        title: 'To jest przykładowy tytuł',
+        desc: 'Tu jest przykład jak snippet będzie wyglądał w wyszukiwarce Google. Zawartość, która się pojawia tu, zazwyczaj jest brana z meta opisu strony.'
       },
       inputs: {
         url: '',
@@ -227,8 +215,30 @@ export default {
       isStar: false,
       isAd: false,
       allData: '',
-      copyBtn: 'Export HTML',
-      captureBtn: 'Capture'
+      copyBtn: 'Skopiuj HTLM',
+      captureBtn: 'Pobierz zrzut ekranu',
+      response: []
+    }
+  },
+  watch: {
+    response: function (val) {
+      // const title = val.data[0]
+      // const desc = val.data[1]
+      // this.inputs.title = title
+      // this.inputs.desc = desc
+      console.log(val)
+    }
+  },
+  filters: {
+    bold: function (value, bold) {
+      let string = value;
+      const boldStr = bold.split(' ');
+      boldStr.forEach(key => {
+        if (string.includes(key) && bold !== ' ') {
+          string = string.replace(key, key.bold())
+        }
+      })
+      return string
     }
   },
   methods: {
@@ -254,43 +264,32 @@ export default {
       if (this.inputs.title === '') {
         return 0
       } else {
-        return document.getElementById('metaTitle').offsetWidth;
+        return document.getElementById('metaTitle').clientWidth;
       }
     },
     getTitleProgress: function () {
       if (this.inputs.title === '') {
         return 0
       } else {
-        return ((document.getElementById('metaTitle').offsetWidth) / 600) * 100;
+        return ((document.querySelector('.results__content__title--title').offsetWidth) / 600) * 100;
       }
     },
     getDecsWidth: function () {
       if (this.inputs.desc === '') {
         return 0
       } else {
-        return document.getElementById('metaDesc').offsetWidth;
+        return document.querySelector('.results__content__desc--desc').offsetWidth;
       }
     },
     getDescProgress: function () {
       if (this.inputs.desc === '') {
         return 0
       } else {
-        return ((document.getElementById('metaDesc').offsetWidth) / 960) * 100;
+        return ((document.querySelector('.results__content__desc--desc').offsetWidth) / 960) * 100;
       }
     },
     capitalizeTitle: function () {
       document.getElementById('metaTitle').classList.add('capitalize')
-    },
-    findBolds: function () {
-      let string = this.inputs.desc
-      const boldStr = this.inputs.bold
-      let separatedStr = boldStr.split(' ');
-      separatedStr.forEach(function (bold) {
-        if (string.includes(bold)) {
-          string = string.replace(bold, `<strong>${bold}</strong>`)
-        }
-      })
-      this.inputs.desc = string
     },
     saveImg: function () {
       html2canvas(document.getElementById('canvas')).then(function (canvas) {
@@ -315,7 +314,8 @@ export default {
           window.open(uri);
         }
       }
-      this.captureBtn = 'Image Saved!'
+
+      this.captureBtn = 'Obraz zapisano'
     },
     copy: function () {
       let title
@@ -340,7 +340,7 @@ export default {
       el.select();
       document.execCommand('copy');
       document.body.removeChild(el);
-      this.copyBtn = 'Copied to clipboard'
+      this.copyBtn = 'Skopiowano do schowka'
     },
     reset: function () {
       this.inputs.url = ''
@@ -348,11 +348,19 @@ export default {
       this.inputs.desc = ''
       this.inputs.bold = ''
       document.getElementById('metaTitle').classList.remove('capitalize')
-      this.captureBtn = 'Capture'
-      this.copyBtn = 'Export HTML'
+      this.captureBtn = 'Pobierz zrzut ekranu'
+      this.copyBtn = 'Skopiuj HTLM'
+    },
+    getData: function () {
+      $.post("http://prym.m-m.work/agregat/url.php", {url: this.inputs.url})
+          .done(function (data) {
+            this.saveData(data)
+          });
+    },
+    saveData: function (data) {
+      JSON.parse(data)
     }
   }
-
 
 }
 </script>
