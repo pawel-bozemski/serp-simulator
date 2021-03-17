@@ -137,7 +137,7 @@
             <div class="results__content__metadata">
               <div class="results__content__url results__content__url--metadata">
                 <p v-if="inputs.url === ''">{{ showUrl() }}</p>
-                <p v-else>{{ inputUrl() }}</p>
+                <p v-else>{{ this.inputs.url }}</p>
               </div>
               <div id="metaTitle" class="results__content__title results__content__url--metadata">
                 <p class="results__content__title--title" v-if="inputs.title === ''">{{ content.title }}</p>
@@ -227,6 +227,13 @@ export default {
       // this.inputs.title = title
       // this.inputs.desc = desc
       console.log(val)
+    },
+    'inputs.url': function (val) {
+      let string = val
+      string = string.replace('https://www.', ' ')
+      string = string.replace('www.', ' ')
+      string = string.replace('/', '>')
+      return this.inputs.url = string
     }
   },
   filters: {
@@ -239,14 +246,11 @@ export default {
         }
       })
       return string
-    }
+    },
   },
   methods: {
     showUrl: function () {
-      return this.content.url.replace('/', ' > ');
-    },
-    inputUrl: function () {
-      return this.inputs.url.replace('/', ' > ');
+      return this.content.url.replace('/', ' > ')
     },
     showDate: function () {
       this.isDate = !this.isDate
