@@ -1,6 +1,6 @@
 <template>
   <div class="main row">
-    <div class="col-5 inputs">
+    <div class="col-xl-5 col-sm-12 inputs">
       <div class="inputs__input">
         <label for="url" class="inputs__input__title">
           URL
@@ -80,7 +80,7 @@
         <button class="btn btn-primary btn-sm" @click="copy()"> {{ copyBtn }}</button>
       </div>
     </div>
-    <div id="canvas" class="col-7 results">
+    <div id="canvas" class="col-xl-7 col-sm-12  results">
       <div class="separator"></div>
       <div class="results__header">
         <div class="row">
@@ -88,21 +88,23 @@
             <img src="../assets/img/logo.png" alt="">
           </div>
           <div class="col-10 results__header__main">
-            <div class="col-12 results__header__main__input">
-              <div class="input-group">
-                <input type="text" disabled class="form-control"
-                       placeholder="Enter a keyword to get real search results" aria-label="Username"
-                       aria-describedby="basic-addon1">
+            <div class="results__header__main__input">
+              <div class="results__header__main__input__icons">
+                <i class="fas fa-times fa-lg"></i>
+                <i style="border-left: 1px solid #dfe1e5;padding-left: 5px;" class="fas fa-keyboard fa-lg"></i>
+                <i class="fas fa-microphone fa-lg"></i>
+                <i class="fas fa-search fa-lg"></i>
               </div>
+
             </div>
-            <div class="separator"></div>
             <div class="col-12 results__header__main__menu">
               <div class="results__header__main__menu">
                 <div class="row">
                   <div v-for="item in menuItems" :key="item.message"
                        class="results__header__main__menu__item">
-                    <p class="results__header__main__menu__item-item">
-                      {{ item.message }}
+                    <p class="results__header__main__menu__item-item"
+                      v-html="item.message">
+
                     </p>
                   </div>
                   <div class="col-6"></div>
@@ -137,7 +139,7 @@
             <div class="results__content__metadata">
               <div class="results__content__url results__content__url--metadata">
                 <p v-if="inputs.url === ''">{{ showUrl() }}</p>
-                <p v-else>{{ this.inputs.url }}</p>
+                <p v-else>{{ this.inputs.url | url }}</p>
               </div>
               <div id="metaTitle" class="results__content__title results__content__url--metadata">
                 <p class="results__content__title--title" v-if="inputs.title === ''">{{ content.title }}</p>
@@ -193,11 +195,12 @@ export default {
   data() {
     return {
       menuItems: [
-        {message: 'Wszystko'},
-        {message: 'Obrazki'},
-        {message: 'Wideo'},
-        {message: 'Mapy'},
-        {message: 'Więcej'}
+        {message: '<i class="fas fa-search"></i> <span>Wszystko</span>'},
+        {message: '<i class="fab fa-youtube"></i> <span>Wideo</span>'},
+        {message: '<i class="far fa-image"></i> <span>Obrazki</span>'},
+        {message: '<i class="far fa-newspaper"></i> <span>Wiadomości</span>'},
+        {message: '<i class="far fa-map"></i> <span>Mapy</span>'},
+        {message: '<i class="fas fa-ellipsis-v"></i> <span>Więcej</span>'}
       ],
       content: {
         url: 'przykładowy/url',
@@ -217,7 +220,7 @@ export default {
       allData: '',
       copyBtn: 'Skopiuj HTLM',
       captureBtn: 'Pobierz zrzut ekranu',
-      response: []
+      response: '',
     }
   },
   watch: {
@@ -228,13 +231,7 @@ export default {
       // this.inputs.desc = desc
       console.log(val)
     },
-    'inputs.url': function (val) {
-      let string = val
-      string = string.replace('https://www.', ' ')
-      string = string.replace('www.', ' ')
-      string = string.replace('/', '>')
-      return this.inputs.url = string
-    }
+
   },
   filters: {
     bold: function (value, bold) {
@@ -247,6 +244,13 @@ export default {
       })
       return string
     },
+    url: function (val) {
+        let string = val
+        string = string.replace('https://www.', ' ')
+        string = string.replace('www.', ' ')
+        string = string.replace('/', '>')
+        return string
+    }
   },
   methods: {
     showUrl: function () {
@@ -358,12 +362,12 @@ export default {
     getData: function () {
       $.post("http://prym.m-m.work/agregat/url.php", {url: this.inputs.url})
           .done(function (data) {
-            this.saveData(data)
+            const val = JSON.parse(data)
+            $('#title').val(val[0])
+            $('#desc').val(val[1])
           });
     },
-    saveData: function (data) {
-      JSON.parse(data)
-    }
+
   }
 
 }
