@@ -5,7 +5,7 @@
         <label for="url" class="inputs__input__title">
           URL
         </label>
-        <input id="url" type="text" placeholder="np. marketingmatch.pl" v-model="inputs.url">
+        <input id="url" type="text" placeholder="np. https://www.marketingmatch.pl" v-model="inputs.url">
         <br>
         <button type="button" class="btn btn-light btn-sm url-btn" @click="getData()">Pobierz meta dane</button>
 
@@ -225,11 +225,10 @@ export default {
   },
   watch: {
     response: function (val) {
-      // const title = val.data[0]
-      // const desc = val.data[1]
-      // this.inputs.title = title
-      // this.inputs.desc = desc
-      console.log(val)
+      const title = val[0]
+      const desc = val[1]
+      this.inputs.title = title
+      this.inputs.desc = desc
     },
 
   },
@@ -246,6 +245,9 @@ export default {
     },
     url: function (val) {
         let string = val
+        if (string.slice(-1) === '/'){
+          string = string.slice(0, -1)
+        }
         string = string.replace('https://www.', ' ')
         string = string.replace('www.', ' ')
         string = string.replace('/', '>')
@@ -272,7 +274,7 @@ export default {
       if (this.inputs.title === '') {
         return 0
       } else {
-        return document.getElementById('metaTitle').clientWidth;
+        return document.querySelector('.results__content__title--title').offsetWidth;
       }
     },
     getTitleProgress: function () {
@@ -360,11 +362,10 @@ export default {
       this.copyBtn = 'Skopiuj HTLM'
     },
     getData: function () {
+      const s = this;
       $.post("http://prym.m-m.work/agregat/url.php", {url: this.inputs.url})
           .done(function (data) {
-            const val = JSON.parse(data)
-            $('#title').val(val[0])
-            $('#desc').val(val[1])
+            s.response = JSON.parse(data)
           });
     },
 
